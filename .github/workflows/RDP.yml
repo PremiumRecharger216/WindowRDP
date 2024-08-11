@@ -34,10 +34,10 @@ jobs:
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - name: Create Tunnel
-      run:  nssm set ngrok StartType svcAutoStart
+      run:  nssm install ngrok C:\Windows\System32\ngrok.exe start --authtoken ${{ secrets.NGROK_AUTH_TOKEN }} tcp 3389
+            nssm set ngrok StartType auto
             nssm set ngrok Path "C:\Windows\System32\ngrok.exe"
             nssm set ngrok AppParameters start --authtoken $Env:NGROK_AUTH_TOKEN tcp 3389 
-            nssm set ngrok Start "C:\Windows\System32\ngrok.exe" start --authtoken ${{ secrets.NGROK_AUTH_TOKEN }} tcp 3389
       
     - name: Connect to your RDP 2core-7GB Ram.
       run: cmd /c NGROK-CHECK.bat
